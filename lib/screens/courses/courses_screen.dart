@@ -62,13 +62,9 @@ class GraphicDesignScreen extends StatelessWidget {
           child: Row(
             children: snapshot.data!.docs.map((doc) {
               Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-              String title = data['title'] ?? 'No Title';  // Default value for title
-              String youtubeUrl = data['youtubelink'] ?? '';  // Default empty string if no link
-              double rating = data.containsKey('rating') ? data['rating'].toDouble() : 0.0; // Safe access for rating
-
-              if (youtubeUrl.isEmpty) {
-                return const SizedBox.shrink(); // Skip if no YouTube URL is available
-              }
+              String title = data['title'] ?? 'No Title';
+              String youtubeUrl = data['youtubeUrl'] ?? '';
+              double rating = data.containsKey('rating') ? data['rating'].toDouble() : 0.0;
 
               return _buildCourseCard(
                 context: context,
@@ -105,17 +101,13 @@ class GraphicDesignScreen extends StatelessWidget {
         return Column(
           children: snapshot.data!.docs.map((doc) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            String title = data['title'] ?? 'No Title';  // Default value for title
-            String youtubeUrl = data['youtubelink'] ?? '';  // Default empty string if no link
-            double rating = data.containsKey('rating') ? data['rating'].toDouble() : 0.0; // Safe access for rating
-
-            if (youtubeUrl.isEmpty) {
-              return const SizedBox.shrink(); // Skip if no YouTube URL is available
-            }
+            String title = data['title'] ?? 'No Title';
+            String youtubeUrl = data['youtubeUrl'] ?? '';
+            double rating = data.containsKey('rating') ? data['rating'].toDouble() : 0.0;
 
             return _buildCourseItem(
               context: context,
-              imageUrl: 'https://img.youtube.com/vi/${_getVideoId(youtubeUrl)}/0.jpg', // Updated to use youtubelink for thumbnail
+              imageUrl: 'https://img.youtube.com/vi/${Uri.parse(youtubeUrl).pathSegments.last}/0.jpg',
               title: title,
               rating: rating,
               lessons: '15 Lessons',
@@ -127,12 +119,6 @@ class GraphicDesignScreen extends StatelessWidget {
     );
   }
 
-  // Function to extract the YouTube video ID
-  String _getVideoId(String youtubeUrl) {
-    final Uri uri = Uri.parse(youtubeUrl);
-    return uri.queryParameters['v'] ?? uri.pathSegments.last;
-  }
-
   Widget _buildCourseCard({
     required BuildContext context,
     required String youtubeUrl,
@@ -140,6 +126,12 @@ class GraphicDesignScreen extends StatelessWidget {
     required double rating,
     required VoidCallback onTap,
   }) {
+    String getYoutubeThumbnail(String youtubeUrl) {
+      final Uri uri = Uri.parse(youtubeUrl);
+      String videoId = uri.queryParameters['v'] ?? uri.pathSegments.last;
+      return 'https://img.youtube.com/vi/$videoId/0.jpg';
+    }
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -157,7 +149,7 @@ class GraphicDesignScreen extends StatelessWidget {
                   top: Radius.circular(15),
                 ),
                 child: Image.network(
-                  'https://img.youtube.com/vi/${_getVideoId(youtubeUrl)}/0.jpg', // Updated to use youtubelink for thumbnail
+                  getYoutubeThumbnail(youtubeUrl),
                   height: 120,
                   width: double.infinity,
                   fit: BoxFit.cover,
