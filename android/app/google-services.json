@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "962436024344",
+    "project_id": "englishmaster-92700",
+    "storage_bucket": "englishmaster-92700.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962436024344:android:0c239e2c3490d0078a9b6d",
+        "android_client_info": {
+          "package_name": "com.example.englishmastery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjtsda-RUY-WfPZUcTSx6r8xoaWn0QCo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
